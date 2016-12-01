@@ -11,7 +11,20 @@ public class didNumber {
 
 
     //Constructor
-    public didNumber(String num){}
+    public didNumber(String num) {
+        number = num;
+        available = false;
+    }
 
+    public void setAvailable(){
+        available = true;
+    }
 
+    public void setunAvailable(){
+        available = false;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
 }

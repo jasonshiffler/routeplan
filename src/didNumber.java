@@ -16,15 +16,18 @@ public class didNumber {
         available = false;
     }
 
+    //Set the number to be available
     public void setAvailable(){
         available = true;
     }
 
-    public void setunAvailable(){
+    //Set the number to be unavailable
+    public void setUnAvailable(){
         available = false;
     }
 
-    public boolean isAvailable() {
+    //Returns true if available, false if unavailable
+    public boolean isAvailable(){
         return available;
     }
 }

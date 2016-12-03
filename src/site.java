@@ -22,6 +22,14 @@ public class site {
     didNumberList.add(temp);
   }
 
+  //Adds a range of numbers to the site the 0th element is the beginning of the range
+  //the 1st element is the end. Any other elements are ignored
+  public void addNumberRange(String[] numRange){
+
+
+  }
+
+
   //Prints all the numbers associated with a site
   public void printNumbers() {
     for (didNumber num : didNumberList) {

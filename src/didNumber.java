@@ -6,14 +6,20 @@
 
 
 public class didNumber {
-  boolean available;  //is the number used
-  String number;      //a string representing the number
+
+  private boolean available;  //is the number used
+  private String number;      //a string representing the number
 
 
-    //Constructor
+    //Object Constructor
     public didNumber(String num) {
         number = num;
         available = false;
+    }
+
+    //Returns a String representation of the number
+    public String getNumber() {
+        return number;
     }
 
     //Set the number to be available

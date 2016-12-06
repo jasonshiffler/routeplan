@@ -35,12 +35,11 @@ public class dialPlan {
 
             }
         } catch (FileNotFoundException ex) {
-            System.out.println("File not Found");     //couldn't find the file
+            System.out.println("routeplan.csv not found");     //couldn't find the file
 
         }
 
     }
-
 
 
     //Builds the sites by reading in the DIDNUMBERs.txt file
@@ -49,17 +48,17 @@ public class dialPlan {
       site newSite;                             //use this to create a new site
 
       try {
-        Scanner scan = new Scanner(new File("DIDNUMBERS.txt"));
+        Scanner scan = new Scanner(new File("DIDNUMBERS.csv"));
         while (scan.hasNextLine()) {
-          String line = scan.nextLine();        //read the line in from the file
-          tokens = getLineElements(line);       //break the elements of the line into tokens
-          if (doesSiteExist(tokens[0]) != true) {  //if the site doesn't exist add it to the list
-            newSite = new site(tokens[0]);        //create the site
+          String line = scan.nextLine();            //read the line in from the file
+          tokens = getLineElements(line);           //break the elements of the line into tokens
+          if (doesSiteExist(tokens[0]) != true) {   //if the site doesn't exist add it to the list
+            newSite = new site(tokens[0]);          //create the site
             newSite.addNumberRange(tokens[1], tokens[2]);  //add numbers to the site
-            siteList.add(newSite);                    // add the site to the list
+            siteList.add(newSite);                         // add the site to the list
             }
-          else {                                   //if the site already exists
-            newSite = getSiteWithName(tokens[0]);  //get the site object
+          else {                                           //if the site already exists
+            newSite = getSiteWithName(tokens[0]);          //get the site object
 
             if (newSite != null) {
               newSite.addNumberRange(tokens[1], tokens[2]); //add numbers to the site
@@ -68,26 +67,26 @@ public class dialPlan {
 
             }
         } catch (FileNotFoundException ex) {
-            System.out.println("File not Found");     //couldn't find the file
+            System.out.println("DIDNUMBERS.csv not found");     //couldn't find the file
 
         }
 
     }
-
+    //Marks each number in the site list available or unavailable
     public void checkAvailability(){
-        boolean found = false;
+        boolean found;                //the found flag
         for (site loc : siteList) {   //iterate through the site list
             for (didNumber didNum: loc.didNumberList) //iterate through each didNumber in the site
             {
-                found = false;
+                found = false;                        //start the search with the number not found
                 for (String usedNum : usedNumberList) //iterate through each number in the used list
                   {
                    if (usedNum.equals(didNum.getNumber()))
-                       found = true;
+                       found = true;                  //the numbers match, the number was found
 
                   }
-                if (found == false)
-                    didNum.setAvailable();
+                if (found == false)                   //if the number wasn't found in the routeplan.csv file
+                    didNum.setAvailable();            //mark it as available
 
             }
 
@@ -103,7 +102,7 @@ public class dialPlan {
     //the 0th element will be ABQ, 1st will be 3145551000, 2nd 3145551099
 
     public String[] getLineElements(String line) {
-        String[] returnString = line.split(" ");      //This is the string array we will return, space is the delimiter
+        String[] returnString = line.split(",");      //This is the string array we will return, space is the delimiter
 
         //Should be three elements in each line and the second and third elements should be ten characters long
         if ( (returnString.length != 3) || (returnString[1].length() != 10 )|| (returnString[2].length() !=10 ) ||

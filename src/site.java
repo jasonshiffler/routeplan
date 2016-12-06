@@ -51,7 +51,7 @@ public class site {
     }
     return;
   }
-
+  //Returns the name of the site
   public String getSiteName(){
     return siteName;
   }

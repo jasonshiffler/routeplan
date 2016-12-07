@@ -1,25 +1,26 @@
 /**
  * Created by jason on 11/30/16.
+  This class is used to represent the enterprise wide list of DID numbers and their availability
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.TreeMap;
+
 
 public class dialPlan {
 
     private ArrayList<site> siteList = new ArrayList<site>();    //An array list of didNumber objects
-    private ArrayList<String> usedNumberList = new ArrayList<String>(); //Array list that holds the list of used numbers
+    private TreeMap usedNumberTree = new TreeMap();           //This tree contains list of used numbers
 
     //constructor
     public dialPlan() {
 
-
     }
 
-    //Builds the list of used numbers from routeplan.csv
+    //Builds the tree of used numbers from routeplan.csv
     public void buildUsedNumbers(){
       String[] tokens;                          //Will use this to break each line of the file into tokens
 
@@ -30,17 +31,13 @@ public class dialPlan {
              if (line.substring(0,1).matches("[0-9]")) {   //if the first character of the line is a number
                tokens = getCSVLineElements(line);          // grab the first token from the line
                if (tokens[0].matches("[0-9]{10}"))         //if it's a 10 digit number
-                 usedNumberList.add(tokens[0]);            //add it to the array list
+                 usedNumberTree.put(tokens[0],Long.parseLong(tokens[0]));            //add it to the array list
              }
-
             }
         } catch (FileNotFoundException ex) {
             System.out.println("routeplan.csv not found");     //couldn't find the file
-
         }
-
     }
-
 
     //Builds the sites by reading in the DIDNUMBERs.txt file
     public void buildSites() {
@@ -68,9 +65,8 @@ public class dialPlan {
             }
         } catch (FileNotFoundException ex) {
             System.out.println("DIDNUMBERS.csv not found");     //couldn't find the file
-
+             System.exit(1);
         }
-
     }
     //Marks each number in the site list available or unavailable
     public void checkAvailability(){
@@ -79,23 +75,17 @@ public class dialPlan {
             for (didNumber didNum: loc.didNumberList) //iterate through each didNumber in the site
             {
                 found = false;                        //start the search with the number not found
-                for (String usedNum : usedNumberList) //iterate through each number in the used list
-                  {
-                   if (usedNum.equals(didNum.getNumber()))
-                       found = true;                  //the numbers match, the number was found
 
-                  }
+                   if (usedNumberTree.containsKey(didNum.getNumber()))
+                     {
+                         found = true;
+                     }
+
                 if (found == false)                   //if the number wasn't found in the routeplan.csv file
                     didNum.setAvailable();            //mark it as available
-
             }
-
         }
-
-
     }
-
-
 
     //extracts the site name, beginning DID, and end DID from a line formatted as
     //ABQ 3145551000 3145551099
@@ -163,8 +153,28 @@ public class dialPlan {
           loc.printNumbers();
           System.out.println("");
       }
-
   }
+    //Prints out all numbers for all sites to a file
+    public void printAllSiteNumbersToFile(){
+
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter("numbers.csv"));
+
+            for (site loc : siteList) {   //iterate through the site list
+
+                for (didNumber num : loc.didNumberList){
+                  out.write(loc.getSiteName()+","+num.getNumber()+"," + num.isAvailable()+"\n");
+                 }
+
+            }
+           out.close();
+        }
+        catch (IOException e){System.out.println("exception occured" +e);
+        }
+
+        }
+
+
 
   //Prints out all available numbers for all sites
     public void printAllAvailableSiteNumbers(){
@@ -176,12 +186,7 @@ public class dialPlan {
 
     }
 
-    public void printUsedNumberList(){
-        for (String num : usedNumberList){
-            System.out.println(num);
-        }
 
-    }
 
 
 }

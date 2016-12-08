@@ -8,21 +8,24 @@ import java.util.ArrayList;
 public class site {
 
   ArrayList<didNumber> didNumberList;    //An array list of didNumber objects
-  private String siteName;         //The site name ABQ,NYO,SHL etc...
+  private String siteName;               //The site name ABQ,NYO,SHL etc...
+  private int numCount;                          //The number DID numbers the site contains
 
   //Constructor
   //name is the name of the site
   public site(String name) {
     siteName = name;                              //The site name ABQ,NYO,SHL etc...
     didNumberList = new ArrayList<didNumber>();
+    numCount = 0;                                 //The site starts out with zero numbers
   }
 
   //Add a number to the list, doesn't currently check for duplicates
   //num is the DID number to add i.e. 3145551234
 
   public void addNumber(String num) {
-    didNumber temp = new didNumber(num);
-    didNumberList.add(temp);
+    didNumber temp = new didNumber(num);   //create a new number object
+    didNumberList.add(temp);               // add it to the list of numbers
+    numCount += 1;                          // increment the count of DID numbers by one
   }
 
   //Adds a range of numbers to the site the 0th element is the beginning of the range
@@ -55,6 +58,27 @@ public class site {
   public String getSiteName(){
     return siteName;
   }
+
+
+  //Calculate the number of available DID numbers the site has and return the value.
+  private int calcNumAvailableNumbers(){
+    int availNum = 0;                      //initialize the count of available numbers
+    for (didNumber num : didNumberList){   //iterate through the list of DID numbers
+      if (num.isAvailable() == true){      //if the number is available increment the number of available numbers
+        availNum += 1;
+      }
+    }
+     return availNum;                       //return the result
+  }
+
+  //Prints a report of available vs total numbers for the site.
+  public void printAvailabilityReport(){
+    System.out.println(siteName +" Total Numbers = " + numCount);
+    System.out.println(siteName +" Available Numbers = " + calcNumAvailableNumbers());
+    System.out.println(siteName +" Percentage of Numbers available = " + ((float)(float)calcNumAvailableNumbers()/(float)numCount)*100 +"%");
+    System.out.println("\n");
+  }
+
 
 
   //Prints all the numbers associated with a site

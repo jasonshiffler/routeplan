@@ -24,6 +24,7 @@ public class routeplan {
             System.out.println("1 print out all available numbers");
             System.out.println("2 print all numbers");
             System.out.println("3 print out all available numbers to a file");
+            System.out.println("4 print usage report");
             System.out.println("0 Exit Program");
             input = keyboard.nextInt();
 
@@ -32,6 +33,8 @@ public class routeplan {
             if (input == 2) {dp.printAllSiteNumbers();}
 
             if (input == 3) {dp.printAllSiteNumbersToFile();}
+
+            if (input == 4) {dp.printUsageReport();}
 
             if (input == 0) {System.exit(1);}
 

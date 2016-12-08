@@ -8,7 +8,6 @@ public class didNumber {
   private boolean available;  //is the number used
   private String number;      //a string representing the number
 
-
     //Object Constructor
     public didNumber(String num) {
         number = num;
@@ -32,6 +31,17 @@ public class didNumber {
 
     //Returns true if available, false if unavailable
     public boolean isAvailable(){
-        return available;
+       return available;
     }
+
+    //Returns the String "Available" if the number is available.
+    //otherwise returns "Unavailable"
+    public String isAvailableString(){
+        if (isAvailable() == true) {
+            return("Available");
+        }
+        return("Unavailable");
+    }
+
 }
+

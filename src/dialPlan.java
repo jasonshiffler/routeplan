@@ -4,11 +4,11 @@
  */
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.TreeMap;
-
 
 public class dialPlan {
 
@@ -104,13 +104,11 @@ public class dialPlan {
         return returnString;
     }
 
-
     //Extracts the elements from the routeplan.csv file
     public String[] getCSVLineElements(String line) {
         String[] returnString = line.split(",");      //This is the string array we will return, space is the delimiter
         return returnString;
     }
-
 
     //Determines if a site is already in the ArrayList
     //Name is the name of the site you want to check if it exists in the List
@@ -124,8 +122,6 @@ public class dialPlan {
                 return true;
             }
         }
-
-
         return false;    //Didn't find the Name in the List
     }
 
@@ -141,10 +137,15 @@ public class dialPlan {
             if (loc.getSiteName().equals(Name) == true) {
                 return loc;
             }
-
         }
         return null;
     }
+
+  public void printUsageReport(){
+      for (site loc : siteList)
+          loc.printAvailabilityReport();
+  }
+
 
   //Prints out all numbers for all sites
   public void printAllSiteNumbers(){
@@ -158,23 +159,21 @@ public class dialPlan {
     public void printAllSiteNumbersToFile(){
 
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("numbers.csv"));
+            BufferedWriter out = new BufferedWriter(new FileWriter("numbers"+ LocalDateTime.now().toString() +".csv"));
 
             for (site loc : siteList) {   //iterate through the site list
 
                 for (didNumber num : loc.didNumberList){
-                  out.write(loc.getSiteName()+","+num.getNumber()+"," + num.isAvailable()+"\n");
+                  out.write(loc.getSiteName()+","+num.getNumber()+"," + num.isAvailableString()+"\n");
                  }
-
             }
            out.close();
         }
-        catch (IOException e){System.out.println("exception occured" +e);
+        catch (IOException e)
+        {
+            System.out.println("exception occured" +e);
         }
-
-        }
-
-
+    }
 
   //Prints out all available numbers for all sites
     public void printAllAvailableSiteNumbers(){
@@ -185,8 +184,5 @@ public class dialPlan {
         }
 
     }
-
-
-
 
 }
